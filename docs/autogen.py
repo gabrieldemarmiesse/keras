@@ -69,8 +69,7 @@ def generate(dest_dir):
     doc_generator = KerasDocumentationGenerator(PAGES,
                                                 project_url,
                                                 template_dir,
-                                                keras_dir / 'examples',
-                                                EXCLUDE)
+                                                keras_dir / 'examples')
     doc_generator.generate(dest_dir)
 
     readme = (keras_dir / 'README.md').read_text()

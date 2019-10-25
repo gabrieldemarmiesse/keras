@@ -75,6 +75,8 @@ from keras import constraints
 from keras import activations
 from keras import preprocessing
 
+from keras_autodoc import get_classes, get_methods, get_functions
+
 
 EXCLUDE = {
     'Optimizer',
@@ -100,10 +102,8 @@ EXCLUDE = {
 # [classA, (classB, ["method1", "method2", ...]), ...]
 # 4) Choose which methods to document (methods listed as qualified names):
 # [classA, (classB, [module.classB.method1, module.classB.method2, ...]), ...]
-PAGES = [
-    {
-        'page': 'models/sequential.md',
-        'methods': [
+PAGES = {
+    'models/sequential.md': [
             models.Sequential.compile,
             models.Sequential.fit,
             models.Sequential.evaluate,
@@ -114,12 +114,9 @@ PAGES = [
             models.Sequential.fit_generator,
             models.Sequential.evaluate_generator,
             models.Sequential.predict_generator,
-            models.Sequential.get_layer,
-        ],
-    },
-    {
-        'page': 'models/model.md',
-        'methods': [
+            models.Sequential.get_layer
+    ],
+    'models/model.md': [
             models.Model.compile,
             models.Model.fit,
             models.Model.evaluate,
@@ -131,11 +128,8 @@ PAGES = [
             models.Model.evaluate_generator,
             models.Model.predict_generator,
             models.Model.get_layer,
-        ]
-    },
-    {
-        'page': 'layers/core.md',
-        'classes': [
+        ],
+    'layers/core.md': [
             layers.Dense,
             layers.Activation,
             layers.Dropout,
@@ -149,12 +143,10 @@ PAGES = [
             layers.SpatialDropout1D,
             layers.SpatialDropout2D,
             layers.SpatialDropout3D,
+            layers.Input
         ],
-        'functions': [layers.Input]
-    },
-    {
-        'page': 'layers/convolutional.md',
-        'classes': [
+
+    'layers/convolutional.md': [
             layers.Conv1D,
             layers.Conv2D,
             layers.SeparableConv1D,
@@ -173,10 +165,7 @@ PAGES = [
             layers.ZeroPadding2D,
             layers.ZeroPadding3D,
         ],
-    },
-    {
-        'page': 'layers/pooling.md',
-        'classes': [
+    'layers/pooling.md': [
             layers.MaxPooling1D,
             layers.MaxPooling2D,
             layers.MaxPooling3D,
@@ -190,17 +179,11 @@ PAGES = [
             layers.GlobalMaxPooling3D,
             layers.GlobalAveragePooling3D,
         ],
-    },
-    {
-        'page': 'layers/local.md',
-        'classes': [
+    'layers/local.md': [
             layers.LocallyConnected1D,
             layers.LocallyConnected2D,
         ],
-    },
-    {
-        'page': 'layers/recurrent.md',
-        'classes': [
+    'layers/recurrent.md': [
             layers.RNN,
             layers.SimpleRNN,
             layers.GRU,
@@ -213,30 +196,11 @@ PAGES = [
             layers.CuDNNGRU,
             layers.CuDNNLSTM,
         ],
-    },
-    {
-        'page': 'layers/embeddings.md',
-        'classes': [
-            layers.Embedding,
-        ],
-    },
-    {
-        'page': 'layers/normalization.md',
-        'classes': [
-            layers.BatchNormalization,
-        ],
-    },
-    {
-        'page': 'layers/advanced-activations.md',
-        'all_module_classes': [advanced_activations],
-    },
-    {
-        'page': 'layers/noise.md',
-        'all_module_classes': [noise],
-    },
-    {
-        'page': 'layers/merge.md',
-        'classes': [
+    'layers/embeddings.md': [layers.Embedding],
+    'layers/normalization.md': [layers.BatchNormalization],
+    'layers/advanced-activations.md': get_classes(advanced_activations, EXCLUDE),
+    'layers/noise.md': get_classes(noise, EXCLUDE),
+    'layers/merge.md': [
             layers.Add,
             layers.Subtract,
             layers.Multiply,
@@ -245,8 +209,6 @@ PAGES = [
             layers.Minimum,
             layers.Concatenate,
             layers.Dot,
-        ],
-        'functions': [
             layers.add,
             layers.subtract,
             layers.multiply,
@@ -255,86 +217,41 @@ PAGES = [
             layers.minimum,
             layers.concatenate,
             layers.dot,
-        ]
-    },
-    {
-        'page': 'preprocessing/sequence.md',
-        'functions': [
+        ],
+    'preprocessing/sequence.md': [
             preprocessing.sequence.pad_sequences,
             preprocessing.sequence.skipgrams,
             preprocessing.sequence.make_sampling_table,
-        ],
-        'classes': [
             preprocessing.sequence.TimeseriesGenerator,
-        ]
-    },
-    {
-        'page': 'preprocessing/image.md',
-        'classes': [
-            (preprocessing.image.ImageDataGenerator, '*')
-        ]
-    },
-    {
-        'page': 'preprocessing/text.md',
-        'functions': [
+        ],
+    'preprocessing/image.md': [preprocessing.image.ImageDataGenerator]
+                              + get_methods(preprocessing.image.ImageDataGenerator),
+    'preprocessing/text.md': [
             preprocessing.text.hashing_trick,
             preprocessing.text.one_hot,
             preprocessing.text.text_to_word_sequence,
-        ],
-        'classes': [
             preprocessing.text.Tokenizer,
-        ]
-    },
-    {
-        'page': 'layers/wrappers.md',
-        'all_module_classes': [wrappers],
-    },
-    {
-        'page': 'metrics.md',
-        'all_module_functions': [metrics],
-    },
-    {
-        'page': 'losses.md',
-        'all_module_functions': [losses],
-    },
-    {
-        'page': 'initializers.md',
-        'all_module_functions': [initializers],
-        'all_module_classes': [initializers],
-    },
-    {
-        'page': 'optimizers.md',
-        'all_module_classes': [optimizers],
-    },
-    {
-        'page': 'callbacks.md',
-        'all_module_classes': [callbacks],
-    },
-    {
-        'page': 'activations.md',
-        'all_module_functions': [activations],
-    },
-    {
-        'page': 'backend.md',
-        'all_module_functions': [backend],
-    },
-    {
-        'page': 'constraints.md',
-        'all_module_classes': [constraints],
-    },
-    {
-        'page': 'utils.md',
-        'functions': [utils.to_categorical,
-                      utils.normalize,
-                      utils.get_file,
-                      utils.print_summary,
-                      utils.plot_model,
-                      utils.multi_gpu_model],
-        'classes': [utils.CustomObjectScope,
-                    utils.HDF5Matrix,
-                    utils.Sequence],
-    },
-]
+        ],
+    'layers/wrappers.md': get_classes(wrappers, EXCLUDE),
+    'metrics.md': get_functions(metrics, EXCLUDE),
+    'losses.md': get_functions(losses, EXCLUDE),
+    'initializers.md': get_functions(initializers, EXCLUDE)
+                       + get_classes(initializers, EXCLUDE),
+    'optimizers.md': get_classes(optimizers, EXCLUDE),
+    'callbacks.md': get_classes(callbacks, EXCLUDE),
+    'activations.md': get_functions(activations, EXCLUDE),
+    'backend.md': get_functions(backend, EXCLUDE),
+    'constraints.md': get_classes(constraints, EXCLUDE),
+    'utils.md': [utils.to_categorical,
+                 utils.normalize,
+                 utils.get_file,
+                 utils.print_summary,
+                 utils.plot_model,
+                 utils.multi_gpu_model,
+                 utils.CustomObjectScope,
+                 utils.HDF5Matrix,
+                 utils.Sequence]
+}
 
 ROOT = 'http://keras.io/'
 
